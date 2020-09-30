@@ -13,7 +13,7 @@ project 1 - A Random Quote Generator
 const quotes = [{
         quote: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
         source: "Albert Einstein",
-        tag: "philosophy"
+        tag: "Philosophy"
     },
     {
         quote: "You know you're in love when you can't fall asleep because reality is finally better than your dreams.",
@@ -41,7 +41,6 @@ const quotes = [{
 
 function getRandomQuote(array) {
     // Calculate a random number to insert into the value of the array
-
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     return randomQuote;
 }
@@ -52,29 +51,48 @@ function getRandomQuote(array) {
 
 function printQuote() {
     // Create a variable to store a random quote object from the getRandomQuote() function.
-    let chosenQuote = getRandomQuote(quotes);
+    const chosenQuote = getRandomQuote(quotes);
 
     // Create another variable to store the HTML string.
-    let codeBlock = `<p class="quote">${chosenQuote.quote}</p> <p class="source">${chosenQuote.source}`;
+    const quoteBasics = `${chosenQuote.quote}</p> <p class="source">${chosenQuote.source}`;
+    let quoteExtra = ``;
+    let finalQuote = ``;
 
     //Check if chosenQuote has a year, citation, or tag
     if (chosenQuote.year) {
-        codeBlock = `${codeBlock} <span class="year"> ${chosenQuote.year} </span>`;
+        quoteExtra = `<span class="year"> ${chosenQuote.year} </span></p>`;
     }
     if (chosenQuote.tag) {
-        codeBlock = `${codeBlock} <span class="year"> ${chosenQuote.year} </span>`;
+        quoteExtra = `<span class="year"> ${chosenQuote.tag} </span>`;
     }
     if (chosenQuote.citation) {
-        codeBlock = `${codeBlock} <span class="year"> ${chosenQuote.year} </span>`;
+        quoteExtra = `<span class="year"> ${chosenQuote.citation} </span>`;
     }
 
-    let finalCodeBlock = codeBlock.push('</p>');
+    // Create the final HTML string
+    finalQuote = `<p class="quote">${quoteBasics} ${quoteExtra}</p>`
 
-
-
-    //Print to html
-    document.getElementById("quote-box").innerHTML = finalCodeBlock;
+    // Print to html
+    document.getElementById("quote-box").innerHTML = finalQuote;
 }
+
+// function that updates a random color at to the background.
+// code adapted from  https://www.w3resource.com/javascript-exercises/javascript-math-exercise-40.php
+function random_background_color() {
+    var x = Math.floor(Math.random() * 256);
+    var y = Math.floor(Math.random() * 256);
+    var z = Math.floor(Math.random() * 256);
+    var backgroundColor = "rgb(" + x + "," + y + "," + z + ")";
+
+    document.body.style.background = backgroundColor;
+}
+
+// setInterval function to change quote and background color
+// Help setting up found at https://www.bitdegree.org/learn/best-code-editor/gExWlP0H
+setInterval(() => {
+    printQuote();
+    random_background_color();
+}, 5000);
 
 /***
  * click event listener for the print quote button
@@ -82,3 +100,6 @@ function printQuote() {
  ***/
 
 document.getElementById('load-quote').addEventListener("click", printQuote, false);
+
+// click event listener to change the background color
+document.getElementById('load-quote').addEventListener("click", random_background_color, false);
